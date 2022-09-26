@@ -1,0 +1,133 @@
+import React, { useEffect, useState } from 'react'
+import { create, all, e } from 'mathjs'
+
+// create a mathjs instance with configuration
+const config = {
+    epsilon: 1e-12,
+    matrix: 'Matrix',
+    number: 'number',
+    precision: 64,
+    predictable: false,
+    randomSeed: null
+}
+const math = create(all, config)
+
+const useMetodoBiseccion = (equation, initialInterval, objetiveError) => {
+
+    const [resultado, setResultado] = useState([])
+
+    const iteraciones = []
+
+    const puntoMedio = (a, b) => {
+        return math.evaluate("(a+b)/2", { a: a, b: b });
+    }
+
+    const intervaloInicial = () => {
+
+        if (initialInterval.indexOf("(") != -1 && initialInterval.indexOf(")") != -1) {
+            initialInterval = initialInterval.substring(1, initialInterval.length - 1)
+
+            let data = initialInterval.split(",");
+
+            return data
+        }
+
+    }
+
+    const evaluarArgumentos = (argumentos) => {
+        try {
+            return {
+                a: math.evaluate(equation, { x: argumentos.a }),
+                b: math.evaluate(equation, { x: argumentos.b }),
+                m: math.evaluate(equation, { x: argumentos.m })
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+    const signosEvaluaciones = (evaluaciones) => {
+        return {
+            a: evaluaciones.a >= 0,
+            b: evaluaciones.b >= 0,
+            m: evaluaciones.m >= 0,
+        }
+    }
+
+    const definirIntervalo = () => {
+        if (iteraciones.length === 0) {
+            return intervaloInicial()
+        }
+
+        let iteracionAnterior = iteraciones[iteraciones.length - 1]
+        return definirNuevoIntervalo(iteracionAnterior.signos, iteracionAnterior.argumentos)
+    }
+
+    const definirNuevoIntervalo = (signos, argumentos) => {
+        if (signos.m !== signos.a) {
+            return [argumentos.a, argumentos.m]
+        } else if (signos.m != signos.b) {
+            return [argumentos.m, argumentos.b]
+        }
+    }
+
+    const definirArgumentos = (intervalo) => {
+        return {
+            a: intervalo[0],
+            b: intervalo[1],
+            m: puntoMedio(intervalo[0], intervalo[1])
+        }
+    }
+
+    const calcularError = (argumentos) => {
+        if (iteraciones.length === 0) return undefined;
+
+        let errorEquation = "((actual - anterior)/actual)*100"
+
+        return math.evaluate(errorEquation, { actual: argumentos.m, anterior: iteraciones[iteraciones.length - 1].argumentos.m })
+
+    }
+
+    const metodoBiseccion = () => {
+        let errorActual = 100
+
+        while (errorActual === undefined || errorActual >= objetiveError) {
+            let intervalo = definirIntervalo();
+            let argumentos = definirArgumentos(intervalo);
+            let evaluaciones = evaluarArgumentos(argumentos)
+            let signos = signosEvaluaciones(evaluaciones)
+            let error = calcularError(argumentos)
+
+            if (error) {
+                error = math.abs(error)
+            }
+
+            let iteracion = {
+                intervalo,
+                argumentos,
+                evaluaciones,
+                signos,
+                error
+            }
+
+            errorActual = error
+
+            iteraciones.push(iteracion)
+        }
+
+
+        setResultado(iteraciones)
+        console.log(iteraciones);
+
+    }
+
+    return {
+        metodoBiseccion,
+        resultado
+
+    }
+}
+
+export default useMetodoBiseccion
