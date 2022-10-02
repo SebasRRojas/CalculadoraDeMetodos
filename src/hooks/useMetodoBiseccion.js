@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { create, all, e } from 'mathjs'
+import { create, all } from 'mathjs'
 
 // create a mathjs instance with configuration
 const config = {
@@ -15,6 +15,7 @@ const math = create(all, config)
 const useMetodoBiseccion = (equation, initialInterval, objetiveError) => {
 
     const [resultado, setResultado] = useState([])
+    const [mathjaxExpression, setMathjaxExpression] = useState([])
 
     const iteraciones = []
 
@@ -117,15 +118,14 @@ const useMetodoBiseccion = (equation, initialInterval, objetiveError) => {
             iteraciones.push(iteracion)
         }
 
-
+        setMathjaxExpression(math.parse(equation).toTex())
         setResultado(iteraciones)
-        console.log(iteraciones);
-
     }
 
     return {
         metodoBiseccion,
-        resultado
+        resultado,
+        mathjaxExpression
 
     }
 }

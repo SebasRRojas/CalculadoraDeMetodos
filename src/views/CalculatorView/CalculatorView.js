@@ -1,56 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, ScrollView, Text, TextInput, View } from 'react-native';
-import MathJax from 'react-native-mathjax';
+import React, { useContext, useState } from 'react'
+import { Text, TextInput, View } from 'react-native'
+import { Picker } from '@react-native-picker/picker';
+import Button from '../../components/button/Button'
+import { styles } from './CalculatorView.style'
+import { CalculatorContext } from '../../context/CalculatorContext';
 
-import MaterialIcon from '@expo/vector-icons/MaterialIcons';
-
-import { styles } from './CalculatorView.style';
-import Button from '../../components/button/Button';
-import useMetodoBiseccion from '../../hooks/useMetodoBiseccion';
-import IterationList from '../../components/iterationList/IterationList';
-
-const mmlOptions = {
-    messageStyle: "none",
-    extensions: ["tex2jax.js"],
-    jax: ["input/TeX", "output/HTML-CSS"],
-    tex2jax: {
-        inlineMath: [
-            ["$", "$"],
-            ["\\(", "\\)"],
-        ],
-        displayMath: [
-            ["$$", "$$"],
-            ["\\[", "\\]"],
-        ],
-        processEscapes: true,
-    },
-    TeX: {
-        extensions: [
-            "AMSmath.js",
-            "AMSsymbols.js",
-            "noErrors.js",
-            "noUndefined.js",
-            "math.js"
-        ],
-    },
-};
-
-const CalculatorView = () => {
-
+const CalculatorView = ({ navigation }) => {
     const [equation, setEquation] = useState("")
     const [interval, setInterval] = useState("")
     const [objetiveError, setObjetiveError] = useState("")
 
-    const { metodoBiseccion, resultado } = useMetodoBiseccion(equation, interval, objetiveError);
+    const [selectedMethod, setSelectedMethod] = useState("BisectionMethodView");
+
+    const { read } = useContext(CalculatorContext);
 
     const onPress = () => {
-        metodoBiseccion();
+        read(equation, interval, objetiveError)
+        navigation.navigate(selectedMethod)
     }
 
     return (
         <View style={styles.container}>
             <Text style={styles.text}>
-                Bisection Method Calculator
+                Calculadora de Ecuaciones
             </Text>
 
             <View style={styles.inputContainer}>
@@ -80,6 +52,21 @@ const CalculatorView = () => {
                 />
             </View>
 
+            <View style={styles.inputContainer}>
+                <Text>Método:</Text>
+                <Picker
+                    selectedValue={selectedMethod}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setSelectedMethod(itemValue)
+                    }
+                >
+                    <Picker.Item label="Bisección" value="BisectionMethodView" />
+                    <Picker.Item label="Secante" value="SecanteMethodView" />
+                    <Picker.Item label="Newton & Raphson" value="NewtonRaphsonMethodView" />
+                </Picker>
+            </View>
+
+
             <Button
                 color='#FFF'
                 backgroundColor='#262626'
@@ -87,23 +74,10 @@ const CalculatorView = () => {
                 onPress={() => onPress()}
             >Calculate</Button>
 
-            <View style={styles.mathInputContainer}>
-                <Text>Equation viewer:</Text>
-                <MathJax
-                    style={styles.mathInput}
-                    mathJaxOptions={mmlOptions}
-                    html={
-                        (equation) ? "$" + equation + "$" : ""
-                    }
-                />
-            </View>
-
-            <IterationList iterations={resultado} />
 
 
         </View>
     )
 }
-
 
 export default CalculatorView

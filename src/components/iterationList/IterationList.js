@@ -13,7 +13,7 @@ const IterationList = ({
 
     return (
         <>
-            <Text style={styles.title}>Resultado</Text>
+            <Text style={styles.title}>Resultado:</Text>
             <FlatList
                 style={containerStyles}
                 data={iterations}
@@ -22,11 +22,11 @@ const IterationList = ({
                         <Text style={styles.title}>Iteración: {index + 1}</Text>
                         <Text>Intervalo: ({item.intervalo[0]},{item.intervalo[1]})</Text>
                         <Text>a: {item.argumentos.a}</Text>
-                        <Text>f(a): {item.signos.a ? "+" : "-"}</Text>
+                        <Text>f(a): {item.evaluaciones.a}</Text>
                         <Text>b: {item.argumentos.b}</Text>
-                        <Text>f(b): {item.signos.b ? "+" : "-"}</Text>
+                        <Text>f(b): {item.evaluaciones.b}</Text>
                         <Text>Xi: {item.argumentos.m}</Text>
-                        <Text>f(Xi): {item.signos.b ? "+" : "-"}</Text>
+                        <Text>f(Xi): {item.evaluaciones.m}</Text>
                         <Text>Error: {item.error ? item.error : "-"}%</Text>
                     </View>
                 )}
