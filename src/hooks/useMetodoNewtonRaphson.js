@@ -26,6 +26,7 @@ const useMetodoNewtonRaphson = (equation, initialInterval, objetiveError) => {
         derivatedEquation = derivate();
 
         let interval = definirIntervalo();
+        console.log(interval);
         let xi = math.evaluate("(a+b)/2", { a: interval[0], b: interval[1] })
 
         while (errorActual >= objetiveError) {
@@ -88,10 +89,12 @@ const useMetodoNewtonRaphson = (equation, initialInterval, objetiveError) => {
     const evaluarEquation = (x) => {
         try {
             const formulaIterativa = `x-((${equation})/(${derivatedEquation}))`
-            console.log(formulaIterativa);
+            console.log("X: "+x);
+            console.log(typeof x);
+            console.log("Formula Iterativa: "+formulaIterativa);
             return math.evaluate(formulaIterativa, { x: x })
         } catch (error) {
-            console.log(error);
+            console.log("Evaluar Ecuación: "+error);
         }
     }
 
@@ -110,8 +113,6 @@ const useMetodoNewtonRaphson = (equation, initialInterval, objetiveError) => {
     }
 
     const evaluarError = (fxi, xi) => {
-        console.log(fxi);
-        console.log(xi);
         try {
             return math.abs(math.evaluate(formulaError, { ac: fxi, an: xi }));
         } catch (error) {

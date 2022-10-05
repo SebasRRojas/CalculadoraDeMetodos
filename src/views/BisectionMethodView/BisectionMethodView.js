@@ -9,6 +9,7 @@ import Button from '../../components/button/Button';
 import useMetodoBiseccion from '../../hooks/useMetodoBiseccion';
 import IterationList from '../../components/iterationList/IterationList';
 import { CalculatorContext } from '../../context/CalculatorContext';
+import IconButton from '../../components/iconButton/IconButton';
 
 const mmlOptions = {
     messageStyle: "none",
@@ -36,7 +37,7 @@ const mmlOptions = {
     },
 };
 
-const BisectionMethodView = () => {
+const BisectionMethodView = ({navigation}) => {
 
     const { status, equation, interval, objetiveError } = useContext(CalculatorContext);
     const { metodoBiseccion, resultado, mathjaxExpression } = useMetodoBiseccion(equation, interval, objetiveError);
@@ -51,6 +52,7 @@ const BisectionMethodView = () => {
 
     return (
         <View style={styles.container}>
+            <IconButton onPress={() => navigation.pop()}/>
             <Text style={styles.text}>
                 Bisection Method Calculator
             </Text>

@@ -4,6 +4,7 @@ import { DataTable } from 'react-native-paper';
 import useMetodoSecante from '../../hooks/useMetodoSecante'
 import MathJax from 'react-native-mathjax';
 import { CalculatorContext } from '../../context/CalculatorContext';
+import IconButton from '../../components/iconButton/IconButton';
 
 const mmlOptions = {
     messageStyle: "none",
@@ -32,7 +33,7 @@ const mmlOptions = {
 };
 
 
-const SecanteMethodView = () => {
+const SecanteMethodView = ({navigation}) => {
     const { status, equation, interval, objetiveError } = useContext(CalculatorContext);
     const { metodoSecante, result, mathjaxExpression } = useMetodoSecante(equation, interval, objetiveError)
 
@@ -41,7 +42,9 @@ const SecanteMethodView = () => {
     }, [])
 
     return (
+
         <View style={styles.container}>
+            <IconButton onPress={() => navigation.pop()} />
             {
                 result.iteraciones
                     ?
