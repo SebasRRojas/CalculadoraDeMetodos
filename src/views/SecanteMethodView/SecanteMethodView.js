@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { DataTable } from 'react-native-paper';
 import useMetodoSecante from '../../hooks/useMetodoSecante'
 import MathJax from 'react-native-mathjax';
@@ -43,7 +43,7 @@ const SecanteMethodView = ({navigation}) => {
 
     return (
 
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <IconButton onPress={() => navigation.pop()} />
             {
                 result.iteraciones
@@ -109,7 +109,7 @@ const SecanteMethodView = ({navigation}) => {
                     <ActivityIndicator size={60} />
             }
 
-        </View>
+        </ScrollView>
     )
 }
 
