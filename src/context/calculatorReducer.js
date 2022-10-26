@@ -7,6 +7,8 @@ export const calculatorReducer = (state, action) => {
                 equation: action.payload.equation,
                 interval: action.payload.interval,
                 objetiveError: action.payload.objetiveError,
+                xArray: action.payload.xArray,
+                yArray: action.payload.yArray,
             };
         case 'clearData':
             return {
@@ -15,6 +17,8 @@ export const calculatorReducer = (state, action) => {
                 equation: null,
                 interval: null,
                 objetiveError: null,
+                xArray: null,
+                yArray: null
             };
 
         default:
