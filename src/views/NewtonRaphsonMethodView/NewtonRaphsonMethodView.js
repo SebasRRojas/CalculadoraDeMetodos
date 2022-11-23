@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import useMetodoNewtonRaphson from '../../hooks/useMetodoNewtonRaphson'
 import { ActivityIndicator, DataTable } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { CalculatorContext } from '../../context/CalculatorContext';
 import IconButton from '../../components/iconButton/IconButton';
 
@@ -16,7 +16,7 @@ const NewtonRaphsonMethodView = ({navigation}) => {
     }, [])
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <IconButton onPress={() => navigation.pop()}/>
             {
                 result.iteraciones
@@ -67,8 +67,8 @@ const NewtonRaphsonMethodView = ({navigation}) => {
                     :
                     <ActivityIndicator size={60} />
             }
-            {console.log(result)}
-        </View>
+
+        </ScrollView>
     )
 }
 
