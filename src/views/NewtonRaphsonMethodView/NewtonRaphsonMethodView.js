@@ -67,7 +67,7 @@ const NewtonRaphsonMethodView = ({navigation}) => {
                     :
                     <ActivityIndicator size={60} />
             }
-
+            {console.log(result)}
         </View>
     )
 }

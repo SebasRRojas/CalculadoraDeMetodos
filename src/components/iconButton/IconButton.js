@@ -8,7 +8,7 @@ import { styles } from './IconButton.style'
 const IconButton = ({
   backgroundColor = "#000",
   color = "#FFF",
-  onPress = () => { },
+  onPress = () => {},
 
   //Custom styles
   buttonStyle
