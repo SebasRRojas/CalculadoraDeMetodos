@@ -14,7 +14,7 @@ export const CalculatorProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(calculatorReducer, calculatorInitialState);
 
-    const read = async ( equation, interval, objetiveError, xArray, yArray) => {
+    const read = async ( equation, interval, objetiveError) => {
         try {
             dispatch({
                 type: 'readData',
@@ -22,8 +22,6 @@ export const CalculatorProvider = ({ children }) => {
                     equation: equation,
                     interval: interval,
                     objetiveError: objetiveError,
-                    xArray: xArray,
-                    yArray: yArray,
                 },
             });
 

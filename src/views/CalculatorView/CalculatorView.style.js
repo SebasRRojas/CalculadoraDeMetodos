@@ -41,5 +41,15 @@ export const styles = StyleSheet.create({
         width: 150,
         alignSelf: "center",
         marginBottom: 25
+    },
+    inputError: {
+        color: 'red'
+
+    },
+    calculateButton: {
+        width: 150,
+        alignSelf: "center",
+        marginBottom: 25
     }
+    
 });

@@ -9,16 +9,53 @@ const CalculatorView = ({ navigation }) => {
     const [equation, setEquation] = useState("")
     const [interval, setInterval] = useState("")
     const [objetiveError, setObjetiveError] = useState("")
-    const [xArray, setXArray] = useState("")
-    const [yArray, setYArray] = useState("")
+
+    const [errorEquation, setErrorEquation] = useState("")
+    const [errorInterval, setErrorInterval] = useState("")
+    const [errorCriterio, setCriterioInterval] = useState("")
+
 
     const [selectedMethod, setSelectedMethod] = useState("BisectionMethodView");
 
     const { read } = useContext(CalculatorContext);
 
     const onPress = () => {
-        read(equation, interval, objetiveError, xArray, yArray)
+        if(!validateData()){
+            return;
+        }
+        read(equation, interval, objetiveError)
         navigation.navigate(selectedMethod)
+    }
+
+    const validateData = () => {
+        setErrorEquation("")
+        setErrorInterval("")
+        setCriterioInterval("")
+        let isValid = true;
+        if(equation.length == 0){
+            setErrorEquation('Debes ingresar una ecuacion valida, no puede ir vacio.')
+            isValid = false;
+        }
+        if(interval.length == 0){
+            setErrorInterval('Debes ingresar un intervalo valido, no puede ir vacio.')
+            isValid = false;
+        }else{
+            if(!/\(-?[0-9.]{1,8},\-?[0-9.]{1,8}\)/.test(interval)){
+                setErrorInterval('Debes ingresar un intervalo valido con el formato (x,y)')
+                isValid = false;
+            }
+        }
+        if(objetiveError.length == 0){
+            setCriterioInterval('Debes ingresar un criterio valido, no puede ir vacio.')
+            isValid = false;
+        }else{
+            if(!/-?[0-9.]{1,16}/.test(objetiveError)){
+                setCriterioInterval('Debes ingresar un criterio valido, tiene que ser numerico.')
+                isValid = false;
+            }
+        }
+
+        return isValid;
     }
 
     return (
@@ -38,7 +75,6 @@ const CalculatorView = ({ navigation }) => {
                     <Picker.Item label="Bisección" value="BisectionMethodView" />
                     <Picker.Item label="Secante" value="SecanteMethodView" />
                     <Picker.Item label="Newton & Raphson" value="NewtonRaphsonMethodView" />
-                    <Picker.Item label="Interpolación de Newton" value="InterpolacionNewtonView" />
                 </Picker>
             </View>
 
@@ -50,15 +86,19 @@ const CalculatorView = ({ navigation }) => {
                     value={equation}
                     placeholder="f(x)=x+y"
                 />
+                
             </View>
+            
 
             {
+                
                 (
                     selectedMethod === "BisectionMethodView" ||
                     selectedMethod === "SecanteMethodView" ||
                     selectedMethod === "NewtonRaphsonMethodView"
                 ) &&
                 <>
+                {errorEquation ? <Text style={styles.inputError}>{errorEquation}</Text> : ""}
                     <View style={styles.inputContainer}>
                         <Text>Initial Interval:</Text>
                         <TextInput
@@ -66,8 +106,10 @@ const CalculatorView = ({ navigation }) => {
                             onChangeText={(e) => setInterval(e)}
                             value={interval}
                             placeholder="(x,y)"
-                        />
+                        />  
                     </View>
+                    {errorInterval ? <Text style={styles.inputError}>{errorInterval}</Text> : ""}
+
 
                     <View style={styles.inputContainer}>
                         <Text>Criterio de error:</Text>
@@ -77,30 +119,8 @@ const CalculatorView = ({ navigation }) => {
                             value={objetiveError}
                         />
                     </View>
-                </>
-            }
+                    {errorCriterio ? <Text style={styles.inputError}>{errorCriterio}</Text> : ""}
 
-            {
-                selectedMethod === "InterpolacionNewtonView" &&
-                <>
-                    <View style={styles.inputContainer}>
-                        <Text>Lista de valores(x):</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(e) => setXArray(e)}
-                            value={xArray}
-                            placeholder="x1,x2,x3..."
-                        />
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <Text>Lista de valores(y):</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(e) => setYArray(e)}
-                            value={yArray}
-                            placeholder="y1,y2,y3..."
-                        />
-                    </View>
                 </>
             }
 
@@ -111,9 +131,6 @@ const CalculatorView = ({ navigation }) => {
                 buttonStyle={styles.calculateButton}
                 onPress={() => onPress()}
             >Calculate</Button>
-
-
-
         </View>
     )
 }

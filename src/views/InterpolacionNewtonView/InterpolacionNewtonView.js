@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+/*import React, { useContext, useEffect } from 'react'
 import { Text, View } from 'react-native'
 import useInterpolacionNewton from '../../hooks/useInterpolacionNewton'
 import IconButton from '../../components/iconButton/IconButton'
@@ -59,4 +59,4 @@ const InterpolacionNewtonView = ({ navigation }) => {
     )
 }
 
-export default InterpolacionNewtonView
+export default InterpolacionNewtonView*/

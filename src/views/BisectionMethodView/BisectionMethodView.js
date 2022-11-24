@@ -52,14 +52,11 @@ const BisectionMethodView = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <IconButton onPress={() => navigation.pop()}/>
+            <IconButton onPress={() => navigation.navigate("CalculatorView") }/>
             <Text style={styles.text}>
                 Bisection Method Calculator
             </Text>
-
-            <IterationList iterations={resultado} />
-
-
+            {resultado.length > 0 ? <IterationList iterations={resultado} /> : navigation.navigate("ViewError") }
         </View>
     )
 }

@@ -22,38 +22,44 @@ const useMetodoNewtonRaphson = (equation, initialInterval, objetiveError) => {
     const formulaError = "((ac-an)/ac)*100"
 
     const metodoNewtonRaphson = () => {
-        let errorActual = 100
-        derivatedEquation = derivate();
+        try {
+            let errorActual = 100
+            derivatedEquation = derivate();
 
-        let interval = definirIntervalo();
-        console.log(interval);
-        let xi = math.evaluate("(a+b)/2", { a: interval[0], b: interval[1] })
+            let interval = definirIntervalo();
+            console.log(interval);
+            let xi = math.evaluate("(a+b)/2", { a: interval[0], b: interval[1] })
 
-        while (errorActual >= objetiveError) {
-            let fxi = evaluarEquation(xi)
-            let error = evaluarError(fxi, xi)
+            while (errorActual >= objetiveError) {
+                let fxi = evaluarEquation(xi)
+                let error = evaluarError(fxi, xi)
 
-            let iteration = {
-                xi,
-                fxi,
-                error
+                let iteration = {
+                    xi,
+                    fxi,
+                    error
+                }
+
+                xi = fxi
+                errorActual = error
+
+
+                iteraciones.push(iteration)
+
             }
 
-            xi = fxi
-            errorActual = error
 
-
-            iteraciones.push(iteration)
-
+            setResult({
+                iteraciones,
+                initialInterval: interval,
+                equation,
+                derivatedEquation
+            })
+            return true;
+        } catch (error) {
+            return false;
         }
-
-
-        setResult({
-            iteraciones,
-            initialInterval: interval,
-            equation,
-            derivatedEquation
-        })
+        
     }
 
     const definirIntervalo = () => {

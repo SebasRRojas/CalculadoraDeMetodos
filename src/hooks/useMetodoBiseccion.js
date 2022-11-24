@@ -92,36 +92,41 @@ const useMetodoBiseccion = (equation, initialInterval, objetiveError) => {
     }
 
     const metodoBiseccion = () => {
-        let errorActual = 100
+        try {
+            let errorActual = 100
 
-        while (errorActual === undefined || errorActual >= objetiveError) {
-            let intervalo = definirIntervalo();
-            let argumentos = definirArgumentos(intervalo);
-            let evaluaciones = evaluarArgumentos(argumentos)
-            let signos = signosEvaluaciones(evaluaciones)
-            let error = calcularError(argumentos)
+            while (errorActual === undefined || errorActual >= objetiveError) {
+                let intervalo = definirIntervalo();
+                let argumentos = definirArgumentos(intervalo);
+                let evaluaciones = evaluarArgumentos(argumentos)
+                let signos = signosEvaluaciones(evaluaciones)
+                let error = calcularError(argumentos)
 
-            if (error) {
-                error = math.abs(error)
+                if (error) {
+                    error = math.abs(error)
+                }
+
+                let iteracion = {
+                    intervalo,
+                    argumentos,
+                    evaluaciones,
+                    signos,
+                    error
+                }
+
+                errorActual = error
+
+                iteraciones.push(iteracion)
             }
 
-            let iteracion = {
-                intervalo,
-                argumentos,
-                evaluaciones,
-                signos,
-                error
-            }
-
-            errorActual = error
-
-            iteraciones.push(iteracion)
-        }
-
-        setMathjaxExpression(math.parse(equation).toTex())
-        setResultado(iteraciones)
+            setMathjaxExpression(math.parse(equation).toTex())
+            setResultado(iteraciones)
+            return true;
+        } catch (error) {
+            return false;
+        } 
     }
-
+    
     return {
         metodoBiseccion,
         resultado,
