@@ -64,6 +64,8 @@ const NewtonRaphsonMethodView = ({navigation}) => {
                     <ActivityIndicator size={60} />
             }
 
+
+            <View style={styles.spacerBlock} />
         </ScrollView>
     )
 }
@@ -83,6 +85,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textAlign: "center",
     },
+    spacerBlock: {
+        height: 100
+    }
 });
 
 export default NewtonRaphsonMethodView

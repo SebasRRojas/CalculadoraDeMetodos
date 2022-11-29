@@ -67,6 +67,7 @@ const useMetodoBiseccion = (equation, initialInterval, objetiveError) => {
     }
 
     const definirNuevoIntervalo = (signos, argumentos) => {
+        console.log("Definiendo nuevo intervalo...");
         if (signos.m !== signos.a) {
             return [argumentos.a, argumentos.m]
         } else if (signos.m != signos.b) {
@@ -97,10 +98,16 @@ const useMetodoBiseccion = (equation, initialInterval, objetiveError) => {
 
             while (errorActual === undefined || errorActual >= objetiveError) {
                 let intervalo = definirIntervalo();
+                console.log("intervalo: " + (intervalo));
                 let argumentos = definirArgumentos(intervalo);
+                console.log("argumentos: " + JSON.stringify(argumentos));
                 let evaluaciones = evaluarArgumentos(argumentos)
+                console.log("evaluaciones: " + JSON.stringify(evaluaciones));
                 let signos = signosEvaluaciones(evaluaciones)
+                console.log("signos: " + JSON.stringify(signos));
                 let error = calcularError(argumentos)
+                console.log("error: " + error);
+
 
                 if (error) {
                     error = math.abs(error)

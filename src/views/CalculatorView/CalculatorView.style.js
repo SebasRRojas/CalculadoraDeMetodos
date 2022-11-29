@@ -19,7 +19,6 @@ export const styles = StyleSheet.create({
     input: {
         width: "100%",
         height: 40,
-        marginBottom: 12,
         borderWidth: 1,
         padding: 10,
         backgroundColor: "#FFF",
@@ -50,6 +49,7 @@ export const styles = StyleSheet.create({
         width: 150,
         alignSelf: "center",
         marginBottom: 25
-    }
+    },
+
     
 });
