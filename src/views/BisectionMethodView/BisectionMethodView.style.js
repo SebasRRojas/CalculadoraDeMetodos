@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         fontWeight: '500',
-        marginTop: 30,
         textAlign: "center",
     },
     inputContainer: {
@@ -42,5 +41,8 @@ export const styles = StyleSheet.create({
         width: 150,
         alignSelf: "center",
         marginBottom: 25
+    },
+    backButton: {
+        marginTop: 15
     }
 });

@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react'
 import useMetodoNewtonRaphson from '../../hooks/useMetodoNewtonRaphson'
 import { ActivityIndicator, DataTable } from 'react-native-paper';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { CalculatorContext } from '../../context/CalculatorContext';
 import IconButton from '../../components/iconButton/IconButton';
+import Card from '../../components/card/Card';
 
 const NewtonRaphsonMethodView = ({navigation}) => {
 
@@ -18,6 +19,9 @@ const NewtonRaphsonMethodView = ({navigation}) => {
     return (
         <ScrollView style={styles.container}>
             <IconButton onPress={() => navigation.pop()}/>
+            <Text style={styles.text}>
+                Calculadora Método Newton-Raphson
+            </Text>
             {
                 result.iteraciones
                     ?
@@ -39,30 +43,22 @@ const NewtonRaphsonMethodView = ({navigation}) => {
 
                             </DataTable>
                         </View>
-                        <View>
-                            <DataTable style={{ backgroundColor: "#e5e5e5" }}>
-                                <DataTable.Header>
-                                    <DataTable.Title>xi</DataTable.Title>
-                                    <DataTable.Title>f(xi)</DataTable.Title>
-                                    <DataTable.Title numeric>error (%)</DataTable.Title>
-                                </DataTable.Header>
 
-                                {
-                                    result.iteraciones.map((item, index) => (
-                                        <DataTable.Row
-                                            key={index}
-                                        >
-                                            <DataTable.Cell>{item.xi}</DataTable.Cell>
-                                            <DataTable.Cell>{item.fxi}</DataTable.Cell>
-                                            <DataTable.Cell numeric>{item.error}</DataTable.Cell>
-                                        </DataTable.Row>
+                        <Text style={styles.resultado}>Resultado:</Text>
 
-                                    ))
-                                }
-
-
-                            </DataTable>
-                        </View>
+                        {
+                            result.iteraciones.map((item, index) => (
+                                <Card
+                                    key={index}
+                                    style={{marginBottom: 15}}
+                                >
+                                    <Text style={{textAlign: "center", marginBottom: 10 }}>Iteracion #{index}</Text>
+                                    <Text>xi: {item.xi}</Text>
+                                    <Text>f(xi): {item.fxi}</Text>
+                                    <Text>error: {item.error}%</Text>
+                                </Card>
+                            ))
+                        }
                     </>
                     :
                     <ActivityIndicator size={60} />
@@ -74,9 +70,18 @@ const NewtonRaphsonMethodView = ({navigation}) => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 100,
+        paddingTop: 25,
         padding: 5,
         flex: 1
+    },
+    resultado: {
+        fontSize: 20,
+        textAlign: 'center'
+    },
+    text: {
+        fontSize: 20,
+        fontWeight: '500',
+        textAlign: "center",
     },
 });
 

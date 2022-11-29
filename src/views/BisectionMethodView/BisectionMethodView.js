@@ -11,52 +11,29 @@ import IterationList from '../../components/iterationList/IterationList';
 import { CalculatorContext } from '../../context/CalculatorContext';
 import IconButton from '../../components/iconButton/IconButton';
 
-const mmlOptions = {
-    messageStyle: "none",
-    extensions: ["tex2jax.js"],
-    jax: ["input/TeX", "output/HTML-CSS"],
-    tex2jax: {
-        inlineMath: [
-            ["$", "$"],
-            ["\\(", "\\)"],
-        ],
-        displayMath: [
-            ["$$", "$$"],
-            ["\\[", "\\]"],
-        ],
-        processEscapes: true,
-    },
-    TeX: {
-        extensions: [
-            "AMSmath.js",
-            "AMSsymbols.js",
-            "noErrors.js",
-            "noUndefined.js",
-            "math.js"
-        ],
-    },
-};
-
-const BisectionMethodView = ({navigation}) => {
+const BisectionMethodView = ({ navigation }) => {
 
     const { status, equation, interval, objetiveError } = useContext(CalculatorContext);
-    const { metodoBiseccion, resultado, mathjaxExpression } = useMetodoBiseccion(equation, interval, objetiveError);
-    
-    
+    const { metodoBiseccion, resultado } = useMetodoBiseccion(equation, interval, objetiveError);
+
     useEffect(() => {
         metodoBiseccion()
     }, [])
 
-
-
+    if ( resultado.length < 0) {
+        navigation.navigate("ViewError")
+    } 
 
     return (
         <View style={styles.container}>
-            <IconButton onPress={() => navigation.navigate("CalculatorView") }/>
+            <View style={styles.backButton}>
+                <IconButton onPress={() => navigation.navigate("CalculatorView")} />
+            </View>
+
             <Text style={styles.text}>
-                Bisection Method Calculator
+                Calculadora Método Bisección
             </Text>
-            {resultado.length > 0 ? <IterationList iterations={resultado} /> : navigation.navigate("ViewError") }
+            {resultado.length > 0 && <IterationList iterations={resultado} />}
         </View>
     )
 }

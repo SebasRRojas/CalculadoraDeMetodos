@@ -1,10 +1,6 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 1
-    },
     itemContainer: {
         padding: 10,
         borderRadius: 20,
@@ -19,12 +15,6 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.37,
         shadowRadius: 7.49,
 
-        elevation: 12,
-        marginBottom: 10
+        elevation: 8,
     },
-    title: {
-        fontSize: 20,
-        alignSelf: "center"
-    }
-
 })

@@ -1,39 +1,13 @@
 import React, { useContext, useEffect } from 'react'
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { DataTable } from 'react-native-paper';
 import useMetodoSecante from '../../hooks/useMetodoSecante'
 import MathJax from 'react-native-mathjax';
 import { CalculatorContext } from '../../context/CalculatorContext';
 import IconButton from '../../components/iconButton/IconButton';
+import Card from '../../components/card/Card';
 
-const mmlOptions = {
-    messageStyle: "none",
-    extensions: ["tex2jax.js"],
-    jax: ["input/TeX", "output/HTML-CSS"],
-    tex2jax: {
-        inlineMath: [
-            ["$", "$"],
-            ["\\(", "\\)"],
-        ],
-        displayMath: [
-            ["$$", "$$"],
-            ["\\[", "\\]"],
-        ],
-        processEscapes: true,
-    },
-    TeX: {
-        extensions: [
-            "AMSmath.js",
-            "AMSsymbols.js",
-            "noErrors.js",
-            "noUndefined.js",
-            "math.js"
-        ],
-    },
-};
-
-
-const SecanteMethodView = ({navigation}) => {
+const SecanteMethodView = ({ navigation }) => {
     const { status, equation, interval, objetiveError } = useContext(CalculatorContext);
     const { metodoSecante, result, mathjaxExpression } = useMetodoSecante(equation, interval, objetiveError)
 
@@ -45,6 +19,10 @@ const SecanteMethodView = ({navigation}) => {
 
         <ScrollView style={styles.container}>
             <IconButton onPress={() => navigation.pop()} />
+
+            <Text style={styles.text}>
+                Calculadora Método Secante
+            </Text>
             {
                 result.iteraciones
                     ?
@@ -59,55 +37,35 @@ const SecanteMethodView = ({navigation}) => {
                                 <DataTable.Row>
                                     <DataTable.Cell>
                                         {result.equation}
-                                        {/* <MathJax
-                                            style={styles.mathInput}
-                                            mathJaxOptions={mmlOptions}
-                                            html={
-                                                (mathjaxExpression) ? "$" + mathjaxExpression + "$" : ""
-                                            }
-                                        /> */}
                                     </DataTable.Cell>
                                     <DataTable.Cell>{result.objetiveError}%</DataTable.Cell>
                                 </DataTable.Row>
-
-
                             </DataTable>
                         </View>
-                        <Text style={styles.resultado}>Resultado</Text>
-                        <View>
-                            <DataTable style={{ backgroundColor: "#e5e5e5" }}>
-                                <DataTable.Header>
-                                    <DataTable.Title>Intervalo</DataTable.Title>
-                                    <DataTable.Title>f(a)</DataTable.Title>
-                                    <DataTable.Title>f(b)</DataTable.Title>
-                                    <DataTable.Title>xi</DataTable.Title>
-                                    <DataTable.Title>f(xi)</DataTable.Title>
-                                    <DataTable.Title numeric>error (%)</DataTable.Title>
-                                </DataTable.Header>
 
-                                {
-                                    result.iteraciones.map((item, index) => (
-                                        <DataTable.Row
-                                            key={index}
-                                        >
-                                            <DataTable.Cell>({item.interval[0]}, {item.interval[1]})</DataTable.Cell>
-                                            <DataTable.Cell>{item.fInterval[0]}</DataTable.Cell>
-                                            <DataTable.Cell>{item.fInterval[1]}</DataTable.Cell>
-                                            <DataTable.Cell>{item.xi}</DataTable.Cell>
-                                            <DataTable.Cell>{item.fxi}</DataTable.Cell>
-                                            <DataTable.Cell numeric>{item.error}</DataTable.Cell>
-                                        </DataTable.Row>
+                        <Text style={styles.resultado}>Resultado:</Text>
+                       
+                        {
+                            result.iteraciones.map((item, index) => (
+                                <Card
+                                    key={index}
+                                >
+                                    <Text>Intervalo: ({item.interval[0]}, {item.interval[1]})</Text>
+                                    <Text>f(a): {item.fInterval[0]}</Text>
+                                    <Text>f(b): {item.fInterval[1]}</Text>
+                                    <Text>xi: {item.xi}</Text>
+                                    <Text>f(xi): {item.fxi}</Text>
+                                    <Text>error: {item.error}%</Text>
+                                </Card>
+                            ))
+                        }
 
-                                    ))
-                                }
-
-
-                            </DataTable>
-                        </View>
                     </>
                     :
                     <ActivityIndicator size={60} />
             }
+
+            <View style={{height: 200}} />
 
         </ScrollView>
     )
@@ -115,14 +73,19 @@ const SecanteMethodView = ({navigation}) => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 100,
+        paddingTop: 25,
         padding: 5,
         flex: 1
     },
     resultado: {
-        fontSize: 75,
+        fontSize: 20,
         textAlign: 'center'
-    }
+    },
+    text: {
+        fontSize: 20,
+        fontWeight: '500',
+        textAlign: "center",
+    },
 });
 
 export default SecanteMethodView
