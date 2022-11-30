@@ -49,7 +49,7 @@ const CalculatorView = ({ navigation }) => {
     const [equation, setEquation] = useState("")
     const [interval, setInterval] = useState("")
     const [objetiveError, setObjetiveError] = useState("")
-    const [mathJaxEquation, setMathJaxEquation] = useState([])
+    const [mathJaxEquation, setMathJaxEquation] = useState()
 
     const [errorEquation, setErrorEquation] = useState("")
     const [errorInterval, setErrorInterval] = useState("")
